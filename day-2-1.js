@@ -1,3 +1,5 @@
+//Day 2: Password Philosophy
+
 const readline = require('readline');
 const fs = require('fs');
 
@@ -6,9 +8,7 @@ let validPasswords = []
 let invalidPasswords = []
 
 const rl = readline.createInterface({
-  input: fs.createReadStream('./input.txt'),
-	//output: process.stdout
-	console: false
+  input: fs.createReadStream('./input.txt')
 });
 
 
@@ -20,16 +20,9 @@ let regex = new RegExp(char, 'g')
 
 }
 
-const limitChecker = (min, max, occurence) => {
-
-	return occurence >= min && occurence <= max
-
-
-}
+const limitChecker = (min, max, occurence) => occurence >= min && occurence <= max
 
 const start = () => {
-
-	console.log('STARTING')
 
 	let passwords = inputArr.map(item => {
 	 return {	
@@ -37,30 +30,21 @@ const start = () => {
 			max: item.split(' ')[0].split('-')[1],
 			char: item.split(' ')[1].split(':')[0],
 			pass: item.split(':')[1].trim(),
-			}
+		}
 	})
 
-
 	passwords.forEach(item => {
-
-		//console.log('Ocuurence of', item.char, 'in password', item.pass, 'is', countOccurence(item.char, item.pass))
-
- let occurence = countOccurence(item.char, item.pass)
-
- let withinLimit = limitChecker(item.min, item.max, occurence)
-
-	return withinLimit ? validPasswords.push(item) : invalidPasswords.push(item)
-
-
+	
+		let occurence = countOccurence(item.char, item.pass)
+		let withinLimit = limitChecker(item.min, item.max, occurence)
+		return withinLimit ? validPasswords.push(item) : invalidPasswords.push(item)
 	})
 
 	console.log('INVALID PASSWORDS:', invalidPasswords.length)
 	console.log('VALID PASSWORDS:', validPasswords.length)
 
 	return validPasswords.length
-
 }
-
 
 rl.on('line', async (input) => {
   await inputArr.push(input);
